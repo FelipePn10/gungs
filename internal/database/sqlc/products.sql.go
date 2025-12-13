@@ -22,7 +22,7 @@ type CreateProductParams struct {
 	UsersID     int64
 	Metadata    json.RawMessage
 	Description string
-	Price       string
+	Price       float64
 	Tags        []string
 	Location    string
 }
@@ -290,7 +290,7 @@ RETURNING id, users_id, metadata, description, price, tags, location, created_at
 type UpdateProductParams struct {
 	Metadata    json.RawMessage
 	Description string
-	Price       string
+	Price       float64
 	Tags        []string
 	Location    string
 	ID          int64

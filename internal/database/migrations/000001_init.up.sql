@@ -26,7 +26,7 @@ CREATE INDEX idx_products_usuarios ON products(users_id);
 -- Buscar produtos por tags (GIN)
 CREATE INDEX idx_products_tags ON products USING GIN(tags);
 
--- Produtos ainda ativos (parcial)
+-- Produtos ainda ativos
 CREATE INDEX idx_products_created_at ON products(created_at);
 
 -- Usuário + Localização (composto)

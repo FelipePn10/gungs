@@ -14,7 +14,7 @@ type Product struct {
 	UsersID     int64
 	Metadata    json.RawMessage
 	Description string
-	Price       string
+	Price       float64
 	Tags        []string
 	Location    string
 	CreatedAt   sql.NullTime
