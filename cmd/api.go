@@ -9,6 +9,7 @@ import (
 
 	"github.com/FelipePn10/gungs/config"
 	"github.com/FelipePn10/gungs/internal/database"
+	"github.com/FelipePn10/gungs/internal/product"
 	"github.com/gin-gonic/gin"
 )
 
@@ -42,6 +43,12 @@ func (app *application) mount() *gin.Engine {
 
 	// Health check global
 	r.GET("/health", app.healthHandler)
+
+	productRepo := product.NewRepository(app.db.Queries())
+	productService := product.NewService(productRepo)
+	productHandler := product.NewHandler(productService)
+
+	r.POST("/product", productHandler.Create)
 
 	return r
 }

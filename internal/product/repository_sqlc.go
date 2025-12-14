@@ -3,16 +3,15 @@ package product
 import (
 	"context"
 
-	"github.com/FelipePn10/gungs/internal/database"
 	"github.com/FelipePn10/gungs/internal/database/sqlc"
 )
 
 type repositorySQLC struct {
-	q *database.DB
+	q *sqlc.Queries
 }
 
 func (r *repositorySQLC) Create(ctx context.Context, p *Product) error {
-	id, err := r.q.Queries().CreateProduct(ctx, sqlc.CreateProductParams{
+	id, err := r.q.CreateProduct(ctx, sqlc.CreateProductParams{
 		UsersID:     p.UserID,
 		Metadata:    p.MetaData,
 		Description: p.Description,
@@ -23,12 +22,13 @@ func (r *repositorySQLC) Create(ctx context.Context, p *Product) error {
 	if err != nil {
 		return err
 	}
+
 	p.ID = id.ID
 	return nil
 }
 
 func (r *repositorySQLC) Update(ctx context.Context, p *Product) error {
-	updatedProduct, err := r.q.Queries().UpdateProduct(ctx, sqlc.UpdateProductParams{
+	updated, err := r.q.UpdateProduct(ctx, sqlc.UpdateProductParams{
 		ID:          p.ID,
 		Metadata:    p.MetaData,
 		Location:    p.Location,
@@ -39,7 +39,8 @@ func (r *repositorySQLC) Update(ctx context.Context, p *Product) error {
 	if err != nil {
 		return err
 	}
-	*p = mapSQLCProductToDomain(updatedProduct)
+
+	*p = mapSQLCProductToDomain(updated)
 	return nil
 }
 
@@ -47,6 +48,6 @@ func (r *repositorySQLC) Update(ctx context.Context, p *Product) error {
 
 // }
 
-func NewRepository(q *database.DB) ProductRepository {
+func NewRepository(q *sqlc.Queries) ProductRepository {
 	return &repositorySQLC{q: q}
 }
